@@ -1,4 +1,8 @@
-package com.kregelbagel.android.drawer;
+package com.kregelbagel.android.fragments;
+
+import com.kregelbagel.android.drawer.R;
+import com.kregelbagel.android.drawer.R.id;
+import com.kregelbagel.android.drawer.R.layout;
 
 import android.app.Fragment;
 import android.os.Bundle;

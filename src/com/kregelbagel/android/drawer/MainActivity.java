@@ -5,6 +5,10 @@ import java.util.List;
 
 import com.kregelbagel.android.core.Apps;
 import com.kregelbagel.android.core.Config;
+import com.kregelbagel.android.fragments.Frag4;
+import com.kregelbagel.android.fragments.FragmentOne;
+import com.kregelbagel.android.fragments.FragmentThree;
+import com.kregelbagel.android.fragments.FragmentTwo;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -80,19 +84,14 @@ public class MainActivity extends Activity {
 
 		dataList.add(new DrawerItem("My Favorites")); // adding a header to the list
 		dataList.add(new DrawerItem("Message", R.drawable.ic_action_email));
-		dataList.add(new DrawerItem("Likes", R.drawable.ic_action_good));
 		dataList.add(new DrawerItem("Games", R.drawable.ic_action_gamepad));
 		dataList.add(new DrawerItem("Lables", R.drawable.ic_action_labels));
 
 		dataList.add(new DrawerItem("Main Options"));// adding a header to the list
 		dataList.add(new DrawerItem("Search", R.drawable.ic_action_search));
-		dataList.add(new DrawerItem("Cloud", R.drawable.ic_action_cloud));
 		dataList.add(new DrawerItem("Camara", R.drawable.ic_action_camera));
 		dataList.add(new DrawerItem("Video", R.drawable.ic_action_video));
-		dataList.add(new DrawerItem("Groups", R.drawable.ic_action_group));
-		dataList.add(new DrawerItem("Import & Export", R.drawable.ic_action_import_export));
 
-		dataList.add(new DrawerItem("Other Option")); // adding a header to the list
 		dataList.add(new DrawerItem("About", R.drawable.ic_action_about));
 		dataList.add(new DrawerItem("Settings", R.drawable.ic_action_settings));
 		dataList.add(new DrawerItem("Help", R.drawable.ic_action_help));
@@ -150,6 +149,10 @@ public class MainActivity extends Activity {
 		switch (possition) {
 
 		case 2:
+			/*
+			 * Textmessaging for android shit :D
+			 * http://mobiforge.com/design-development/sms-messaging-android
+			 */
 			fragment = new FragmentThree();
 			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
 			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
@@ -194,27 +197,8 @@ public class MainActivity extends Activity {
 			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
 			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			break;
+		
 		case 12:
-			fragment = new FragmentOne();
-			args.putString(FragmentOne.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
-			break;
-		case 14:
-			fragment = new FragmentThree();
-			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
-			break;
-		case 15:
-			fragment = new FragmentOne();
-			args.putString(FragmentOne.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
-			break;
-		case 16:
-			fragment = new FragmentTwo();
-			args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
-			break;
-		case 17:
 			fragment = new Frag4();
 			/*
 			 * Add more functionality to the app for AppWidgets.

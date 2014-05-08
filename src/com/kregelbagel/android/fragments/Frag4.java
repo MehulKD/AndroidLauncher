@@ -1,4 +1,4 @@
-package com.kregelbagel.android.drawer;
+package com.kregelbagel.android.fragments;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.kregelbagel.android.core.Config;
 import com.kregelbagel.android.core.Apps;
+import com.kregelbagel.android.drawer.R;
+import com.kregelbagel.android.drawer.R.id;
+import com.kregelbagel.android.drawer.R.layout;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -31,31 +34,18 @@ import android.widget.TextView;
 
 public class Frag4 extends Fragment {
 	ImageView imgview;
-	PackageManager pm ;
-	
+	PackageManager pm;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.drawer2, container, false);
-		if(pm == null){
+		if (pm == null) {
 			pm = Config.context.getPackageManager();
 		}
 		TableLayout gv = (TableLayout) view.findViewById(R.id.gridView1);
 		gv.setWeightSum(2f);
 		Config.context.getResources().getDisplayMetrics();
 
-		// TextView[] tvItemName = new TextView[apps.size()];
-		// for (int i = 0; i < apps.size(); i++) {
-		// TextView tvItemName = new TextView(Config.context);
-		// tvItemName.setId(i + 10);
-		// tvItemName.setText(apps.get(i).getItem(i));
-		// tvItemName.setBackgroundColor(Color.BLACK);
-		// tvItemName.setTextColor(Color.WHITE);
-		// tvItemName.setTextSize(textSize);
-		// tvItemName.setLayoutParams(new LayoutParams(textViewLayout,
-		// LayoutParams.WRAP_CONTENT));
-		// gv.addView(tvItemName);
-		// }
 		int i = 0;
 		List<Apps> loadedApps = loadInstalledApps(false);
 		Collections.sort(loadedApps, new Comparator<Apps>() {
@@ -82,9 +72,9 @@ public class Frag4 extends Fragment {
 			ima.setId(i + 500);
 			ima.setImageDrawable(ico);
 
-			ima.setLayoutParams(new android.widget.TableLayout.LayoutParams(dpToPx(50), dpToPx(50), 0.2f));
+			ima.setLayoutParams(new android.widget.TableLayout.LayoutParams(Config.dpToPx(50), Config.dpToPx(50), 0.2f));
 
-			tb.addView(ima, new TableRow.LayoutParams(dpToPx(50), dpToPx(50)));
+			tb.addView(ima, new TableRow.LayoutParams(Config.dpToPx(50), Config.dpToPx(50)));
 			TextView name = new TextView(Config.context);
 			name.setId(i);
 			name.setLayoutParams(new android.widget.TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
@@ -92,24 +82,25 @@ public class Frag4 extends Fragment {
 			name.setText(a.getTitle());
 			a.setID(i);
 			name.setTextColor(Color.BLACK);
-			name.setTextSize(dpToPx(10));
+			name.setTextSize(Config.dpToPx(10));
 			name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-			name.setPadding(dpToPx(25), dpToPx(10), dpToPx(15), dpToPx(10));
+			name.setPadding(Config.dpToPx(25), Config.dpToPx(10), Config.dpToPx(15), Config.dpToPx(10));
 
-			tb.setPadding(dpToPx(25), dpToPx(10), dpToPx(15), dpToPx(10));
+			tb.setPadding(Config.dpToPx(25), Config.dpToPx(10), Config.dpToPx(15), Config.dpToPx(10));
 			tb.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					tb.setBackgroundColor(Color.LTGRAY);
-					Intent intent = Config.context.getPackageManager().getLaunchIntentForPackage(a.getPackageName());
+					Intent intent = Config.context.getPackageManager().getLaunchIntentForPackage(
+					    a.getPackageName());
 
-          if (intent != null) {
-              startActivity(intent);
-          }
-          tb.setBackgroundColor(Color.TRANSPARENT);
+					if (intent != null) {
+						startActivity(intent);
+					}
+					tb.setBackgroundColor(Color.TRANSPARENT);
 				}
-				
+
 			});
 			tb.addView(name, new TableRow.LayoutParams(LayoutParams.MATCH_PARENT,
 			    LayoutParams.WRAP_CONTENT));
@@ -155,9 +146,5 @@ public class Frag4 extends Fragment {
 		return apps;
 	}
 
-	public int dpToPx(int dp) {
-		DisplayMetrics displayMetrics = Config.context.getResources().getDisplayMetrics();
-		int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-		return px;
-	}
+	
 }

@@ -1,6 +1,8 @@
 package com.kregelbagel.android.core;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 public class Config {
@@ -18,4 +20,19 @@ public class Config {
 		Toast.makeText(context, " " + s + " ", Toast.LENGTH_LONG).show();
 	}
 
+	public static void setBluetooth() {
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (mBluetoothAdapter.isEnabled()) {
+			makeHotToast("Bluetooth Disabled!");
+			mBluetoothAdapter.disable();
+		} else {
+			makeHotToast("Bluetooth Enabled!");
+			mBluetoothAdapter.enable();
+		}
+	}
+	public static int dpToPx(int dp) {
+		DisplayMetrics displayMetrics = Config.context.getResources().getDisplayMetrics();
+		int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+		return px;
+	}
 }
