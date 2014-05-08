@@ -216,13 +216,12 @@ public class MainActivity extends Activity {
 			break;
 		case 17:
 			fragment = new Frag4();
-			gv = (GridLayout) findViewById(R.id.gridView1);
-			// ArrayList<Apps> apps = cnf.getApps();
-			Intent intent = new Intent(Intent.ACTION_MAIN, null);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-			
-			
+			/*
+			 * Add more functionality to the app for AppWidgets.
+			 * http://developer.android.com/guide/topics/appwidgets/host.html
+			 * http://developer.android.com/reference/android/appwidget/AppWidgetHost.html
+			 */
+			break;
 
 		default:
 			break;

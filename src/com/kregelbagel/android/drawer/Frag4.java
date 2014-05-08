@@ -1,81 +1,163 @@
 package com.kregelbagel.android.drawer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.kregelbagel.android.core.Config;
 import com.kregelbagel.android.core.Apps;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class Frag4 extends Fragment {
-
-	ImageView ivIcon;
-
-	public static final String IMAGE_RESOURCE_ID = "iconResourceID";
-	public static final String ITEM_NAME = "itemName";
-
-	public Frag4() {
-
-	}
+	ImageView imgview;
+	PackageManager pm ;
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.drawer2, container, false);
-		GridLayout gv = (GridLayout) view.findViewById(R.id.gridView1);
-		List<ApplicationInfo> appsList = new ArrayList<ApplicationInfo>();
-		PackageManager pm = Config.context.getPackageManager();
-		appsList = pm.getInstalledApplications(0);
-
-		ArrayList<Apps> apps = new ArrayList<Apps>();
-		Apps appsClass;
-		for (ApplicationInfo appInfo : appsList) {
-			String label = (String) appInfo.loadLabel(pm);
-			// Drawable image = appInfo.loadIcon(pm);
-			appsClass = new Apps();
-			appsClass.addItems(label, label);
-			apps.add(appsClass);
+		if(pm == null){
+			pm = Config.context.getPackageManager();
 		}
-		// ivIcon = (ImageView) view.findViewById(R.id.appicon);
-		if (apps.size() < 3)
-			for (int a = 0; a < 3; a++) {
-				Apps object = new Apps();
-				apps.add(object);
-			}
-		DisplayMetrics metrics = Config.context.getResources().getDisplayMetrics();
-		float dp = 250f;
-		float fpixels = metrics.density * dp;
-		int pixels = (int) (fpixels + 0.5f);
+		TableLayout gv = (TableLayout) view.findViewById(R.id.gridView1);
+		gv.setWeightSum(2f);
+		Config.context.getResources().getDisplayMetrics();
+
 		// TextView[] tvItemName = new TextView[apps.size()];
-		for (int i = 0; i < apps.size(); i++) {
-			TextView tvItemName = new TextView(Config.context);
-			tvItemName.setId(i + 10);
-			tvItemName.setText(apps.get(i).getItem(i));
-			tvItemName.setBackgroundColor(Color.BLACK);
-			tvItemName.setTextColor(Color.WHITE);
-			tvItemName.setLayoutParams(new LayoutParams(pixels, LayoutParams.WRAP_CONTENT));
-			// tvItemName.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-			// LayoutParams.WRAP_CONTENT));
-			gv.addView(tvItemName);
-			Config.makeHotToast(tvItemName.getText() + "");
+		// for (int i = 0; i < apps.size(); i++) {
+		// TextView tvItemName = new TextView(Config.context);
+		// tvItemName.setId(i + 10);
+		// tvItemName.setText(apps.get(i).getItem(i));
+		// tvItemName.setBackgroundColor(Color.BLACK);
+		// tvItemName.setTextColor(Color.WHITE);
+		// tvItemName.setTextSize(textSize);
+		// tvItemName.setLayoutParams(new LayoutParams(textViewLayout,
+		// LayoutParams.WRAP_CONTENT));
+		// gv.addView(tvItemName);
+		// }
+		int i = 0;
+		List<Apps> loadedApps = loadInstalledApps(false);
+		Collections.sort(loadedApps, new Comparator<Apps>() {
+
+			@Override
+			public int compare(Apps lhs, Apps rhs) {
+				// TODO Auto-generated method stub
+				return lhs.getTitle().compareTo(rhs.getTitle());
+			}
+		});
+		for (final Apps a : loadedApps) {
+			final TableRow tb = new TableRow(Config.context);
+			tb.setId(i + 1000);
+			Drawable ico = null;
+			try {
+				Intent in = pm.getLaunchIntentForPackage(a.getPackageName());
+				if (in != null) {
+					ico = pm.getActivityIcon(in);
+
+				}
+			} catch (NameNotFoundException e) {
+			}
+			ImageView ima = new ImageView(Config.context);
+			ima.setId(i + 500);
+			ima.setImageDrawable(ico);
+
+			ima.setLayoutParams(new android.widget.TableLayout.LayoutParams(dpToPx(50), dpToPx(50), 0.2f));
+
+			tb.addView(ima, new TableRow.LayoutParams(dpToPx(50), dpToPx(50)));
+			TextView name = new TextView(Config.context);
+			name.setId(i);
+			name.setLayoutParams(new android.widget.TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+			    LayoutParams.WRAP_CONTENT, 0.8f));
+			name.setText(a.getTitle());
+			a.setID(i);
+			name.setTextColor(Color.BLACK);
+			name.setTextSize(dpToPx(10));
+			name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+			name.setPadding(dpToPx(25), dpToPx(10), dpToPx(15), dpToPx(10));
+
+			tb.setPadding(dpToPx(25), dpToPx(10), dpToPx(15), dpToPx(10));
+			tb.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					tb.setBackgroundColor(Color.LTGRAY);
+					Intent intent = Config.context.getPackageManager().getLaunchIntentForPackage(a.getPackageName());
+
+          if (intent != null) {
+              startActivity(intent);
+          }
+          tb.setBackgroundColor(Color.TRANSPARENT);
+				}
+				
+			});
+			tb.addView(name, new TableRow.LayoutParams(LayoutParams.MATCH_PARENT,
+			    LayoutParams.WRAP_CONTENT));
+
+			gv.addView(tb, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+			    LayoutParams.WRAP_CONTENT));
+			/*
+			 * This is the gray line...
+			 */
+			TableRow tl = new TableRow(Config.context);
+			tl.setBackgroundResource(R.layout.customborder);
+			gv.addView(tl);
+			i++;
 		}
 
-		// ivIcon.setImageDrawable(view.getResources().getDrawable(
-		// getArguments().getInt(IMAGE_RESOURCE_ID)));
 		return view;
+	}
+
+	private List<Apps> loadInstalledApps(boolean includeSysApps) {
+		List<Apps> apps = new ArrayList<Apps>();
+
+		// the package manager contains the information about all installed apps
+		PackageManager packageManager = Config.context.getPackageManager();
+
+		List<PackageInfo> packs = packageManager.getInstalledPackages(0); // PackageManager.GET_META_DATA
+
+		for (int i = 0; i < packs.size(); i++) {
+			PackageInfo p = packs.get(i);
+			ApplicationInfo a = p.applicationInfo;
+			// skip system apps if they shall not be included
+			if ((!includeSysApps) && ((a.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
+				continue;
+			}
+			Apps app = new Apps();
+			app.setTitle(p.applicationInfo.loadLabel(packageManager).toString());
+			app.setPackageName(p.packageName);
+			app.setVersionName(p.versionName);
+			app.setVersionCode(p.versionCode);
+			CharSequence description = p.applicationInfo.loadDescription(packageManager);
+			app.setDescription(description != null ? description.toString() : "");
+			apps.add(app);
+		}
+		return apps;
+	}
+
+	public int dpToPx(int dp) {
+		DisplayMetrics displayMetrics = Config.context.getResources().getDisplayMetrics();
+		int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+		return px;
 	}
 }
