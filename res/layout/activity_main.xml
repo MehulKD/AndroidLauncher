@@ -9,8 +9,9 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="match_parent" 
+        />
+		
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right
          languages and on the right side for right-to-left languages.
@@ -21,7 +22,7 @@
          
     <ListView
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
+        android:layout_width="260dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"

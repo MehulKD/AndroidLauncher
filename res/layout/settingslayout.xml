@@ -5,18 +5,22 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white" >
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp" >
+            android:padding="20dp" > 
 
             <TextView
                 android:layout_weight="1"
                 android:text="@string/bluetooth_toggle" />
 
-            <Switch android:layout_weight="1" />
+            <Switch
+                android:id="@+id/bluetooth_toggle"
+                android:layout_weight="1" />
+
         </TableRow>
 
         <TableRow
@@ -24,7 +28,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp" >
 
-            <TextView android:text="@string/app_name" />
+            <TextView android:text="To be used..." />
 
             <Switch android:layout_weight="1" />
         </TableRow>

@@ -84,7 +84,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 			for (Account account : list) {
 				if (account.type.contains("com.google")) {
 					email = account.name;
-					type = "Austin Kregel";
+					type = "Grayson Briggs";
 					userList.add(new SpinnerItem(R.drawable.user1, type, email));
 
 				}

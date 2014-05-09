@@ -7,5 +7,10 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="bluetooth_toggle">Toggle Bluetooth</string>
+    <string name="btnIntend">Take (big) Picture</string>
+    <string name="btnIntendS">Take (small) Picture</string>
+    <string name="btnIntendV">Take Video</string>
+    <string name="cannot">Cannot</string>
+    <string name="album_name">CameraSample</string>
 
 </resources>

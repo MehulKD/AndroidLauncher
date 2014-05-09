@@ -3,37 +3,32 @@ package com.kregelbagel.android.drawer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kregelbagel.android.core.Apps;
 import com.kregelbagel.android.core.Config;
-import com.kregelbagel.android.fragments.Frag4;
+import com.kregelbagel.android.fragments.AppsDrawerFragment;
 import com.kregelbagel.android.fragments.FragmentOne;
 import com.kregelbagel.android.fragments.FragmentThree;
 import com.kregelbagel.android.fragments.FragmentTwo;
+import com.kregelbagel.android.fragments.SettingsFragment;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -57,17 +52,22 @@ public class MainActivity extends Activity {
 	public Config getConfig() {
 		return cnf;
 	}
-
+	@Override
+	public void onBackPressed() {
+		return;
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		pm = this.getPackageManager();
-
+		final WallpaperManager wallpaper = WallpaperManager.getInstance(this);
+		final Drawable wallpaperDraw = wallpaper.getFastDrawable();
+		getWindow().setBackgroundDrawable(wallpaperDraw);
 		Intent intent = new Intent(Intent.ACTION_MAIN, null);
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		cnf = new Config();
-		cnf.context = getApplicationContext();
+		Config.context = getApplicationContext();
 
 		setContentView(R.layout.activity_main);
 
@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 		dataList.add(new DrawerItem(true)); // adding a spinner to the list
 
 		dataList.add(new DrawerItem("My Favorites")); // adding a header to the list
-		dataList.add(new DrawerItem("Message", R.drawable.ic_action_email));
+		dataList.add(new DrawerItem("App drawer", R.drawable.ic_action_settings));
 		dataList.add(new DrawerItem("Games", R.drawable.ic_action_gamepad));
 		dataList.add(new DrawerItem("Lables", R.drawable.ic_action_labels));
 
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
 		dataList.add(new DrawerItem("About", R.drawable.ic_action_about));
 		dataList.add(new DrawerItem("Settings", R.drawable.ic_action_settings));
 		dataList.add(new DrawerItem("Help", R.drawable.ic_action_help));
-		dataList.add(new DrawerItem("App drawer", R.drawable.ic_action_camera));
+		dataList.add(new DrawerItem("Messages", R.drawable.ic_action_camera));
 		adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item, dataList);
 
 		mDrawerList.setAdapter(adapter);
@@ -149,13 +149,15 @@ public class MainActivity extends Activity {
 		switch (possition) {
 
 		case 2:
+
+			
+			fragment = new AppsDrawerFragment();
 			/*
-			 * Textmessaging for android shit :D
-			 * http://mobiforge.com/design-development/sms-messaging-android
+			 * Add more functionality to the app for AppWidgets.
+			 * http://developer.android.com/guide/topics/appwidgets/host.html
+			 * http://developer
+			 * .android.com/reference/android/appwidget/AppWidgetHost.html
 			 */
-			fragment = new FragmentThree();
-			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			break;
 		case 3:
 			fragment = new FragmentOne();
@@ -188,23 +190,22 @@ public class MainActivity extends Activity {
 			args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			break;
 		case 10:
-			fragment = new FragmentTwo();
-			args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
+			fragment = new SettingsFragment();
 			break;
 		case 11:
 			fragment = new FragmentThree();
 			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
 			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			break;
-		
+
 		case 12:
-			fragment = new Frag4();
 			/*
-			 * Add more functionality to the app for AppWidgets.
-			 * http://developer.android.com/guide/topics/appwidgets/host.html
-			 * http://developer.android.com/reference/android/appwidget/AppWidgetHost.html
+			 * Textmessaging for android shit :D
+			 * http://mobiforge.com/design-development/sms-messaging-android
 			 */
+			fragment = new FragmentThree();
+			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
+			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			break;
 
 		default:

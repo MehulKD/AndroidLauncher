@@ -30,6 +30,13 @@ public class Config {
 			mBluetoothAdapter.enable();
 		}
 	}
+	public static boolean bluetoothStatus(){
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if(mBluetoothAdapter.isEnabled())
+			return true;
+		else 
+			return false;
+	}
 	public static int dpToPx(int dp) {
 		DisplayMetrics displayMetrics = Config.context.getResources().getDisplayMetrics();
 		int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));

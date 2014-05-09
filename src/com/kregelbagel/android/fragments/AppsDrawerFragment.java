@@ -23,8 +23,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
@@ -32,7 +34,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class Frag4 extends Fragment {
+public class AppsDrawerFragment extends Fragment {
 	ImageView imgview;
 	PackageManager pm;
 
@@ -81,17 +83,17 @@ public class Frag4 extends Fragment {
 			    LayoutParams.WRAP_CONTENT, 0.8f));
 			name.setText(a.getTitle());
 			a.setID(i);
-			name.setTextColor(Color.BLACK);
+			name.setTextColor(Color.WHITE);
 			name.setTextSize(Config.dpToPx(10));
 			name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
 			name.setPadding(Config.dpToPx(25), Config.dpToPx(10), Config.dpToPx(15), Config.dpToPx(10));
 
 			tb.setPadding(Config.dpToPx(25), Config.dpToPx(10), Config.dpToPx(15), Config.dpToPx(10));
+			tb.setBackgroundColor(Color.argb(175, 0, 0,0));
 			tb.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					tb.setBackgroundColor(Color.LTGRAY);
 					Intent intent = Config.context.getPackageManager().getLaunchIntentForPackage(
 					    a.getPackageName());
 
