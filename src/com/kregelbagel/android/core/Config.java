@@ -1,5 +1,6 @@
 package com.kregelbagel.android.core;
 
+import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 
 public class Config {
 	public static Context context = null;
+	public static FragmentManager fragmentManager = null;
 
 	public static void makeHotToast(String s) {
 		Toast.makeText(context, s, Toast.LENGTH_SHORT).show();

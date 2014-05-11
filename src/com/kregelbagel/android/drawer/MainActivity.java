@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.kregelbagel.android.core.Config;
 import com.kregelbagel.android.fragments.AppsDrawerFragment;
+import com.kregelbagel.android.fragments.CameraFragment;
 import com.kregelbagel.android.fragments.FragmentOne;
 import com.kregelbagel.android.fragments.FragmentThree;
 import com.kregelbagel.android.fragments.FragmentTwo;
@@ -52,10 +53,12 @@ public class MainActivity extends Activity {
 	public Config getConfig() {
 		return cnf;
 	}
+
 	@Override
 	public void onBackPressed() {
 		return;
 	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,7 +71,7 @@ public class MainActivity extends Activity {
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		cnf = new Config();
 		Config.context = getApplicationContext();
-
+		Config.fragmentManager = getFragmentManager();
 		setContentView(R.layout.activity_main);
 
 		// Initializing
@@ -150,13 +153,25 @@ public class MainActivity extends Activity {
 
 		case 2:
 
-			
 			fragment = new AppsDrawerFragment();
 			/*
 			 * Add more functionality to the app for AppWidgets.
 			 * http://developer.android.com/guide/topics/appwidgets/host.html
 			 * http://developer
 			 * .android.com/reference/android/appwidget/AppWidgetHost.html
+			 * 
+			 * for sms Messaging
+			 * https://web.archive.org/web/20121022021217/http://mobdev
+			 * .olin.edu/mobdevwiki/FrontPage/Tutorials/SMS%20Messaging
+			 * https://code.google
+			 * .com/p/android-smspopup/source/browse/SMSPopup/src/net
+			 * /everythingandroid/smspopup/util/SmsPopupUtils.java?r=
+			 * f5505a976d846531a1c3294975d33c0694259397
+			 * 
+			 * reading sms
+			 * https://code.google.com/p/android-smspopup/source/browse/SMSPopup
+			 * /src/net/everythingandroid/smspopup/util/SmsPopupUtils.java?r=
+			 * f5505a976d846531a1c3294975d33c0694259397
 			 */
 			break;
 		case 3:
@@ -170,14 +185,18 @@ public class MainActivity extends Activity {
 			args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			break;
 		case 5:
-			fragment = new FragmentThree();
-			args.putString(FragmentThree.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
-			break;
-		case 7:
 			fragment = new FragmentTwo();
 			args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition).getItemName());
 			args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
+			break;
+		case 6:
+			fragment = new FragmentTwo();
+			args.putString(FragmentTwo.ITEM_NAME, dataList.get(possition).getItemName());
+			args.putInt(FragmentTwo.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
+
+			break;
+		case 7:
+			fragment = new CameraFragment();
 			break;
 		case 8:
 			fragment = new FragmentThree();
@@ -211,11 +230,10 @@ public class MainActivity extends Activity {
 		default:
 			break;
 		}
+		FragmentManager frgManager = getFragmentManager();
 
 		fragment.setArguments(args);
-		FragmentManager frgManager = getFragmentManager();
 		frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
 		mDrawerList.setItemChecked(possition, true);
 		setTitle(dataList.get(possition).getItemName());
 		mDrawerLayout.closeDrawer(mDrawerList);

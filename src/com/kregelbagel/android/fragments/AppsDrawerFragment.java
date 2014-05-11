@@ -8,9 +8,6 @@ import java.util.List;
 import com.kregelbagel.android.core.Config;
 import com.kregelbagel.android.core.Apps;
 import com.kregelbagel.android.drawer.R;
-import com.kregelbagel.android.drawer.R.id;
-import com.kregelbagel.android.drawer.R.layout;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -20,13 +17,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
@@ -148,5 +142,5 @@ public class AppsDrawerFragment extends Fragment {
 		return apps;
 	}
 
-	
+
 }
