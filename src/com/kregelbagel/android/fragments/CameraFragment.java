@@ -184,6 +184,8 @@ public class CameraFragment extends Fragment {
 		);
 		mCurrentPhotoPath = "file:" + image.getAbsolutePath();
 		galleryAddPic(image.getAbsolutePath());
+		handleCamera(mCamera, mCameraCurrentlyLocked);
+		mCamera.startPreview();
 		return image;
 	}
 
