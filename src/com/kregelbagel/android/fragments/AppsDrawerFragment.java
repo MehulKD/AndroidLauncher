@@ -8,12 +8,17 @@ import java.util.List;
 import com.kregelbagel.android.core.Config;
 import com.kregelbagel.android.core.Apps;
 import com.kregelbagel.android.drawer.R;
+
 import android.app.Fragment;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,6 +36,7 @@ import android.widget.TextView;
 public class AppsDrawerFragment extends Fragment {
 	ImageView imgview;
 	PackageManager pm;
+	public ArrayList<ApplicationInfo> data = new ArrayList<ApplicationInfo>(42);
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,17 +47,17 @@ public class AppsDrawerFragment extends Fragment {
 		TableLayout gv = (TableLayout) view.findViewById(R.id.gridView1);
 		gv.setWeightSum(2f);
 		Config.context.getResources().getDisplayMetrics();
-
 		int i = 0;
-		List<Apps> loadedApps = loadInstalledApps(false);
+		List<Apps> loadedApps = listAllw2();
 		Collections.sort(loadedApps, new Comparator<Apps>() {
 
 			@Override
 			public int compare(Apps lhs, Apps rhs) {
-				// TODO Auto-generated method stub
 				return lhs.getTitle().compareTo(rhs.getTitle());
 			}
 		});
+		// Config.makeColdToast(loadedApps.size());
+
 		for (final Apps a : loadedApps) {
 			final TableRow tb = new TableRow(Config.context);
 			tb.setId(i + 1000);
@@ -67,7 +73,6 @@ public class AppsDrawerFragment extends Fragment {
 			ImageView ima = new ImageView(Config.context);
 			ima.setId(i + 500);
 			ima.setImageDrawable(ico);
-
 			ima.setLayoutParams(new android.widget.TableLayout.LayoutParams(Config.dpToPx(50), Config.dpToPx(50), 0.2f));
 
 			tb.addView(ima, new TableRow.LayoutParams(Config.dpToPx(50), Config.dpToPx(50)));
@@ -83,13 +88,12 @@ public class AppsDrawerFragment extends Fragment {
 			name.setPadding(Config.dpToPx(25), Config.dpToPx(10), Config.dpToPx(15), Config.dpToPx(10));
 
 			tb.setPadding(Config.dpToPx(25), Config.dpToPx(10), Config.dpToPx(15), Config.dpToPx(10));
-			tb.setBackgroundColor(Color.argb(175, 0, 0,0));
+			tb.setBackgroundColor(Color.argb(175, 0, 0, 0));
 			tb.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = Config.context.getPackageManager().getLaunchIntentForPackage(
-					    a.getPackageName());
+					Intent intent = Config.context.getPackageManager().getLaunchIntentForPackage(a.getPackageName());
 
 					if (intent != null) {
 						startActivity(intent);
@@ -98,11 +102,9 @@ public class AppsDrawerFragment extends Fragment {
 				}
 
 			});
-			tb.addView(name, new TableRow.LayoutParams(LayoutParams.MATCH_PARENT,
-			    LayoutParams.WRAP_CONTENT));
+			tb.addView(name, new TableRow.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
-			gv.addView(tb, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-			    LayoutParams.WRAP_CONTENT));
+			gv.addView(tb, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			/*
 			 * This is the gray line...
 			 */
@@ -115,32 +117,33 @@ public class AppsDrawerFragment extends Fragment {
 		return view;
 	}
 
-	private List<Apps> loadInstalledApps(boolean includeSysApps) {
+	public List<Apps> listAllw2() {
 		List<Apps> apps = new ArrayList<Apps>();
+		List<ApplicationInfo> appinfo = pm.getInstalledApplications(0);
 
-		// the package manager contains the information about all installed apps
-		PackageManager packageManager = Config.context.getPackageManager();
-
-		List<PackageInfo> packs = packageManager.getInstalledPackages(0); // PackageManager.GET_META_DATA
-
-		for (int i = 0; i < packs.size(); i++) {
-			PackageInfo p = packs.get(i);
-			ApplicationInfo a = p.applicationInfo;
-			// skip system apps if they shall not be included
-			if ((!includeSysApps) && ((a.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
-				continue;
+		Apps app;
+		int i = 0;
+		List<String> appnames = appNames();
+		for (int j = 0; j < appinfo.size(); j++) {
+			if (Config.in_array(appnames, appinfo.get(j).packageName)) {
+				app = new Apps();
+				app.setPackageName(appinfo.get(j).packageName);
+				app.setTitle(appinfo.get(j).loadLabel(pm).toString());
+				apps.add(app);
 			}
-			Apps app = new Apps();
-			app.setTitle(p.applicationInfo.loadLabel(packageManager).toString());
-			app.setPackageName(p.packageName);
-			app.setVersionName(p.versionName);
-			app.setVersionCode(p.versionCode);
-			CharSequence description = p.applicationInfo.loadDescription(packageManager);
-			app.setDescription(description != null ? description.toString() : "");
-			apps.add(app);
 		}
 		return apps;
 	}
 
+	public List appNames() {
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		List<ResolveInfo> packs = pm.queryIntentActivities(mainIntent, 0);
 
+		List<String> appNames = new ArrayList<String>(packs.size());
+		for (ResolveInfo ai : packs) {
+			appNames.add(ai.activityInfo.packageName.toString());
+		}
+		return appNames;
+	}
 }

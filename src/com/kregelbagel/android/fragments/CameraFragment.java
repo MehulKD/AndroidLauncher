@@ -2,37 +2,27 @@ package com.kregelbagel.android.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.content.ContentValues;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.hardware.Camera.Size;
-import android.media.MediaScannerConnection;
-import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,7 +67,7 @@ public class CameraFragment extends Fragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.layout.cameralayout, menu);
+		inflater.inflate(R.menu.cameralayout, menu);
 	}
 
 	@Override
@@ -102,6 +92,7 @@ public class CameraFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
 		switch (item.getItemId()) {
+
 		case R.id.menu_switch_cam:
 			if (mCamera != null) {
 				mCamera.stopPreview();
@@ -125,7 +116,13 @@ public class CameraFragment extends Fragment {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			startActivity(intent);
 			return true;
+		case R.id.open_gallery:
+			Intent inte = new Intent(Intent.ACTION_MAIN);
+			inte.setComponent(new ComponentName("com.google.android.gallery3d",
+			    "com.google.android.gallery.MainActivity"));
+			startActivity(inte);
 
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -141,7 +138,7 @@ public class CameraFragment extends Fragment {
 
 		PictureCallback jpegCallback = new PictureCallback() {
 			public void onPictureTaken(byte[] data, Camera camera) {
-				Bitmap bitmapPicture = BitmapFactory.decodeByteArray(data, 0, data.length);
+				BitmapFactory.decodeByteArray(data, 0, data.length);
 				FileOutputStream outStream = null;
 				try {
 					outStream = new FileOutputStream(createImageFile());
@@ -170,6 +167,7 @@ public class CameraFragment extends Fragment {
 	String mCurrentPhotoPath = Environment.DIRECTORY_DCIM;
 	static final int REQUEST_TAKE_PHOTO = 1;
 
+	@SuppressLint("SimpleDateFormat")
 	private File createImageFile() throws IOException {
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 		String imageFileName = "KB_" + timeStamp + "_";
@@ -251,9 +249,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
 		final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 		setMeasuredDimension(width, height);
-		if (mSupportedPreviewSizes != null) {
+		if (mSupportedPreviewSizes != null)
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
-		}
 		if (mCamera != null) {
 			Camera.Parameters parameters = mCamera.getParameters();
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);

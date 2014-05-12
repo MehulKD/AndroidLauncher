@@ -2,6 +2,9 @@ package com.kregelbagel.android.core;
 
 import java.util.Map;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,21 +15,34 @@ public class Apps {
 	private String versionName;
 	private int versionCode;
 	private String description;
+	private String[] categoryName;
+	private ResolveInfo resolveinfo;
+	Intent intent;
+
 	private int id;
+
 	// ordinary getters and setters
 
 	public String getTitle() {
 		return title;
 	}
+	
+	public void setResolveInfo(ResolveInfo ri){
+		this.resolveinfo = ri;
+	}
+	
+	public ResolveInfo getResolveInfo(){
+		return this.resolveinfo;
+	}
 
-	public int getID(){
+	public int getID() {
 		return id;
 	}
-	
-	public void setID(int id){
+
+	public void setID(int id) {
 		this.id = id;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -62,8 +78,7 @@ public class Apps {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
+	
 	public class AppViewHolder {
 
 		public TextView mTitle;
@@ -91,10 +106,15 @@ public class Apps {
 			}
 		}
 	}
-  private static Map<String, Drawable> mIcons;
 
-	public static void setIcons(Map<String, Drawable> icons) {
-    mIcons = icons;
+	public  Drawable mIcon;
+
+	public void setIcons(Drawable icon) {
+		mIcon = icon;
+	}
+
+	public Drawable getIcon() {
+	  return mIcon;
   }
 
 }

@@ -12,5 +12,7 @@
         android:id="@+id/photo_capture"
         android:showAsAction="ifRoom"
         android:title="Snap!"/>
-
+	<item
+	    android:id="@+id/open_gallery"
+	    android:title="Open Gallery"/>
 </menu>

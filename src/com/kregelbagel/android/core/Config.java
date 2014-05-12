@@ -1,5 +1,8 @@
 package com.kregelbagel.android.core;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -14,11 +17,16 @@ public class Config {
 		Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 	}
 
-	public void makeColdToast(String s) {
+	public static void makeColdToast(String s) {
 		Toast.makeText(context, s, Toast.LENGTH_LONG).show();
 	}
 
-	public void makeColdToast(int s) {
+	public static void makeColdToast(String[] s) {
+		for (String a : s)
+			Toast.makeText(context, a, Toast.LENGTH_LONG).show();
+	}
+
+	public static void makeColdToast(int s) {
 		Toast.makeText(context, " " + s + " ", Toast.LENGTH_LONG).show();
 	}
 
@@ -32,16 +40,39 @@ public class Config {
 			mBluetoothAdapter.enable();
 		}
 	}
-	public static boolean bluetoothStatus(){
+
+	public static boolean bluetoothStatus() {
 		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		if(mBluetoothAdapter.isEnabled())
+		if (mBluetoothAdapter.isEnabled())
 			return true;
-		else 
+		else
 			return false;
 	}
+
 	public static int dpToPx(int dp) {
 		DisplayMetrics displayMetrics = Config.context.getResources().getDisplayMetrics();
 		int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 		return px;
 	}
+
+	public static boolean in_array(List haystack, String needle) {
+		for (int i = 0; i < haystack.size(); i++) {
+			if (haystack.get(i).toString().equals(needle)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean in_array(List haystack, List needle) {
+		for (int i = 0; i < haystack.size(); i++) {
+			for (int j = 0; j< needle.size(); j++) {
+				if (haystack.get(i).toString().equals(needle.get(j).toString())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }

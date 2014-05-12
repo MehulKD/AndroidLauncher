@@ -108,8 +108,8 @@ public class MainActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
-		    R.string.drawer_open, R.string.drawer_close) {
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
+		    R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to
@@ -152,8 +152,9 @@ public class MainActivity extends Activity {
 		switch (possition) {
 
 		case 2:
-
-			fragment = new AppsDrawerFragment();
+			fragment = new FragmentOne();
+			args.putString(FragmentOne.ITEM_NAME, dataList.get(possition).getItemName());
+			args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
 			/*
 			 * Add more functionality to the app for AppWidgets.
 			 * http://developer.android.com/guide/topics/appwidgets/host.html
@@ -175,9 +176,8 @@ public class MainActivity extends Activity {
 			 */
 			break;
 		case 3:
-			fragment = new FragmentOne();
-			args.putString(FragmentOne.ITEM_NAME, dataList.get(possition).getItemName());
-			args.putInt(FragmentOne.IMAGE_RESOURCE_ID, dataList.get(possition).getImgResID());
+			fragment = new AppsDrawerFragment();
+
 			break;
 		case 4:
 			fragment = new FragmentTwo();
